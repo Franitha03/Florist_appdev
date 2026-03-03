@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+    <title>Tussie-Mussie – Cart</title>
+    <link rel="stylesheet" href="style.css">
+    <meta name="theme-color" content="#ebe5d8">
+</head>
+
+<body>
+
+<header>
+    <h1>Your Cart</h1>
+    <p>Selected bouquet details</p>
+</header>
+
+<main class="cart-container">
+    <div class="cart-card">
+        <img id="cart-image" src="" alt="Selected flower" />
+        <h3 id="cart-name"></h3>
+        <p id="cart-price"></p>
+        <p id="cart-availability"></p>
+    </div>
+
+    <button class="back-button" onclick="window.location.href='index.html'">
+        ← Continue browsing
+    </button>
+</main>
+
+<footer>
+    © 2026 Tussie-Mussie
+</footer>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const raw = localStorage.getItem("selectedFlower");
+    if (!raw) {
+      document.getElementById("cart-name").textContent = "No item in cart yet.";
+      document.getElementById("cart-price").textContent = "";
+      document.getElementById("cart-availability").textContent = "";
+      document.getElementById("cart-image").style.display = "none";
+      return;
+    }
+
+    try {
+      const item = JSON.parse(raw);
+      document.getElementById("cart-name").textContent = item.name || "";
+      document.getElementById("cart-price").textContent = item.price
+        ? "Price: ₹" + item.price
+        : "";
+      document.getElementById("cart-availability").textContent = item.availability
+        ? "Availability: " + item.availability
+        : "";
+
+      if (item.image) {
+        const img = document.getElementById("cart-image");
+        img.src = item.image;
+        img.alt = item.name || "Selected flower";
+        img.style.display = "block";
+      }
+    } catch (e) {
+      console.error("Failed to read cart item", e);
+    }
+  });
+</script>
+
+</body>
+</html>
+
